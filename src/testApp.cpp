@@ -19,15 +19,7 @@ void testApp::update(){
 void testApp::draw(){
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
-    //if (isA) {
-        //ofLogNotice(ofToString(isA));
-        //ofPushMatrix();
-        //ofRotate(30, 1, 0, 0.5);
-        //ofBox(50, -200, 4, 40, 40, 40);
-        //ofPopMatrix();
-    //}
-    
-    
+ 
     ofPushMatrix();
     ofTranslate(ofGetWidth()/2, ofGetHeight());
     ofSetColor(255, 255, 255);
@@ -35,14 +27,19 @@ void testApp::draw(){
     if (phase1) {
         ofBox(50, -200, 4, 40, 40, 40);
     }
-    //ofBox(100, -200, 4, 40, 40, 40);
+
+    Leap::Frame frame = leapController.frame();
+    Leap::HandList hands = frame.hands();
+    
+    if (!hands.isEmpty()) {
+        ofLogNotice("hand detected");
+    }
     
     vector<Leap::FingerList> fingers = leap.getFingers();
     if (!fingers.empty()) {
         phase1 = true;
-        ofLogNotice("finger detected",ofToString(!fingers.empty()));
-        
-        //ofSphere(100,-200,4, 30);
+        //ofLogNotice("finger detected",ofToString(!fingers.empty()));
+
         
         for (int cnt = 0; cnt < fingers.size(); cnt++) {
             for (int fingerNum = 0; fingerNum < fingers[cnt].count(); fingerNum++) {
@@ -51,11 +48,10 @@ void testApp::draw(){
                 pt.x = pt.x*2;
                 pt.y = (pt.y * -1)*2;
                 pt.z = pt.z *2;
-                ofLogNotice("finger number is " + ofToString(cnt) + ofToString(fingerNum));
-                //ofSphere(pt.x,pt.y,pt.z, 10);
-                ofBox(pt.x, pt.y, pt.z, 10, 10, 10);
-                ofLogNotice("position is " + ofToString(pt.x) + " " + ofToString(pt.y) + " " + ofToString(pt.z));
-                ofLogNotice("velocity is " + ofToString(vpt.x) + " " + ofToString(vpt.y) + " " + ofToString(vpt.z));
+                //ofLogNotice("finger number is " + ofToString(cnt) + ofToString(fingerNum));
+                ofSphere(pt.x,pt.y,pt.z, 10);
+                //ofLogNotice("position is " + ofToString(pt.x) + " " + ofToString(pt.y) + " " + ofToString(pt.z));
+                //ofLogNotice("velocity is " + ofToString(vpt.x) + " " + ofToString(vpt.y) + " " + ofToString(vpt.z));
             }
         }
         Leap::Vector tpt = fingers[0][0].tipPosition();

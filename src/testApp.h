@@ -29,4 +29,6 @@ class testApp : public ofBaseApp{
     bool phase5 = false;
     bool phase6 = false;
     bool phase7 = false;
+    
+    ofBoxPrimitive box;
 };
